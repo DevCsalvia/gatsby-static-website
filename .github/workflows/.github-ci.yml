@@ -2,7 +2,7 @@ name: Gatsby DevOps
 on: [push]
 jobs:
   Install_Dependencies:
-    container: node
+    container: node:16
     runs-on: ubuntu-latest
     steps:
       - run: npm install
