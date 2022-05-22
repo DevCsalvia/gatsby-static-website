@@ -1,0 +1,9 @@
+name: Gatsby DevOps
+on: [push]
+jobs:
+  Install_Dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - run: npm install
+      - run: npm install -g gatsby-cli
+      - run: gatsby build
