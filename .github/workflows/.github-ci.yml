@@ -5,7 +5,7 @@ jobs:
     container: node:16
     runs-on: ubuntu-latest
     steps:
-      - run: ls
-      - run: npm install
+      - uses: actions/checkout@v2
+      - uses: bahmutov/npm-install@v1
       - run: npm install -g gatsby-cli
       - run: gatsby build
