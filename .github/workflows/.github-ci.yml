@@ -2,7 +2,7 @@ name: Gatsby DevOps
 on: [push]
 jobs:
   Install_Dependencies:
-    container: node:lts-alpine3.14
+    container: node:16.15.0-bullseye-slim
     runs-on: ubuntu-latest
     steps:
       - run: npm install
