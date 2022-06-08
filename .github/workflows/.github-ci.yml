@@ -9,3 +9,8 @@ jobs:
       - run: npm ci
       - run: npm install -g gatsby-cli
       - run: gatsby build
+      name: Upload built public folder
+        uses: actions/upload-artifact@v3
+        with:
+          name: public
+          path: ./public
