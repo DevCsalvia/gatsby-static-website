@@ -19,5 +19,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: [Install_Dependencies]
     steps:
+      - run: ls -la
       - run: grep "Gatsby" ./public/index.html
       - run: grep "XXXXXXXX" ./public/index.html
