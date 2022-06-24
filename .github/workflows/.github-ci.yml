@@ -14,3 +14,10 @@ jobs:
         with:
           name: public
           path: ./public
+  Test_artifact:
+    container: node:16
+    runs-on: ubuntu-latest
+    needs: [Install_Dependencies]
+    steps:
+      - run: grep "Gatsby" ./public/index.html
+      - run: grep "XXXXXXXX" ./public/index.html
