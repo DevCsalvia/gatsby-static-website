@@ -13,7 +13,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: public
-          path: ./public
+          path: public
   Test_artifact:
     container: node:16
     runs-on: ubuntu-latest
