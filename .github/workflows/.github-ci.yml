@@ -33,5 +33,5 @@ jobs:
       - run: npm ci
       - run: npm install -g gatsby-cli
       - run: gatsby serve &
-      - run: sleep 3
-      - run: curl http://localhost:9000 | tac | tac | grep -q "Gatsby"
+      - run: sleep 10
+      - run: curl "http://localhost:9000" | tac | tac | grep -q "Gatsby"
