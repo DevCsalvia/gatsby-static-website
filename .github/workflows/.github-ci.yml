@@ -40,7 +40,6 @@ jobs:
           project: '.'
           login: ${{secrets.surge_login}}
           token: ${{secrets.surge_token}}
-      - run: ls -la
   Test_website:
     container: node:16
     runs-on: ubuntu-latest
