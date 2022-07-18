@@ -30,7 +30,6 @@ jobs:
     needs: [Install_Dependencies]
     steps:
       - name: Deploy to Mycube.surge.sh
-      - run: ls -la
         uses: dswistowski/surge-sh-action@v1
         with:
           domain: 'Mycube.surge.sh'
