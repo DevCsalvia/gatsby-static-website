@@ -30,10 +30,11 @@ jobs:
     needs: [Install_Dependencies]
     steps:
       - name: Deploy to Mycube.surge.sh
+      - run: ls -la
         uses: dswistowski/surge-sh-action@v1
         with:
           domain: 'Mycube.surge.sh'
-          project: './public'
+          project: '.'
           login: ${{secrets.surge_login}}
           token: ${{secrets.surge_token}}
 #  Test_website:
