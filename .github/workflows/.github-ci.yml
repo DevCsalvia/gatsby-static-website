@@ -24,14 +24,27 @@ jobs:
         with:
           name: public
       - run: grep "Gatsby" ./index.html
-  Test_website:
+  deploy_to_surge:
     container: node:16
     runs-on: ubuntu-latest
     needs: [Install_Dependencies]
     steps:
-      - uses: actions/checkout@v2
-      - run: npm ci
-      - run: npm install -g gatsby-cli
-      - run: gatsby serve &
-      - run: sleep 10
-      - run: curl "http://localhost:9000" | tac | tac | grep -q "Gatsby"
+      - name: Deploy to Mycube.surge.sh
+        uses: dswistowski/surge-sh-action@v1
+        with:
+          domain: 'Mycube.surge.sh'
+          project: ''./public'
+          login: ${{secrets.surge_login}}
+          token: ${{secrets.surge_token}}
+#  Test_website:
+#    container: node:16
+#    runs-on: ubuntu-latest
+#    needs: [Install_Dependencies]
+#    steps:
+#      - uses: actions/checkout@v2
+#      - run: npm ci
+#      - run: npm install -g gatsby-cli
+#      - run: gatsby serve &
+#      - run: sleep 10
+#      - run: curl "http://localhost:9000" | tac | tac | grep -q "Gatsby"
+
