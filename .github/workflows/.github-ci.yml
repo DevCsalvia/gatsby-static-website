@@ -29,10 +29,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: [Install_Dependencies]
     steps:
-      - name: Deploy to Mycube.surge.sh
+      - name: Deploy to Quibox.surge.sh
         uses: dswistowski/surge-sh-action@v1
         with:
-          domain: 'Mycube.surge.sh'
+          domain: 'Quibox.surge.sh'
           project: '.'
           login: ${{secrets.surge_login}}
           token: ${{secrets.surge_token}}
