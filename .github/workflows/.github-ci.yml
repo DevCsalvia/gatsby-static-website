@@ -30,16 +30,13 @@ jobs:
           name: public
       - run: grep "Gatsby" ./index.html
   Deploy_staging:
-    on:
-      push:
-        branches:
-          - master
     environment:
       name: staging
       url: http://${{ env.STAGING_DOMAIN }}
     container: node:16
     runs-on: ubuntu-latest
     needs: [ Install_Dependencies ]
+    if: github.ref == 'refs/heads/master'
     steps:
       - name: Download public folder
         uses: actions/download-artifact@v3
