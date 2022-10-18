@@ -1,8 +1,8 @@
 name: Gatsby DevOps
 on: [push]
 env:
-  PRODUCTION_DOMAIN: Quibox.surge.sh
-  STAGING_DOMAIN: Quibox-staging.surge.sh
+  PRODUCTION_DOMAIN: quibox.surge.sh
+  STAGING_DOMAIN: quibox-staging.surge.sh
 jobs:
   Install_Dependencies:
     container: node:16
@@ -30,6 +30,10 @@ jobs:
           name: public
       - run: grep "Gatsby" ./index.html
   Deploy_staging:
+    on:
+      push:
+        branches:
+          - master
     environment:
       name: staging
       url: http://${{ env.STAGING_DOMAIN }}
