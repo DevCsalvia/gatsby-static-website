@@ -27,7 +27,7 @@ jobs:
           name: public
       - run: grep "Gatsby" ./index.html
   Deploy_staging:
-    env:
+    environment:
       name: staging
       url: http://Quibox-staging.surge.sh
     container: node:16
@@ -46,7 +46,7 @@ jobs:
           login: ${{secrets.surge_login}}
           token: ${{secrets.surge_token}}
   Deploy_production:
-    env:
+    environment:
       name: production
       url: http://Quibox.surge.sh
     container: node:16
