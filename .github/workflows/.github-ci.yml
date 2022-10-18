@@ -74,5 +74,5 @@ jobs:
     steps:
       - run: apk --no-cache add curl
       - run: echo curl --version
-      - run: curl "https://${{ env.PRODUCTION_DOMAIN }} | tac | tac | grep -q "Gatsby"
+      - run: curl https://${{ env.PRODUCTION_DOMAIN }} | tac | tac | grep -q "Gatsby"
 
