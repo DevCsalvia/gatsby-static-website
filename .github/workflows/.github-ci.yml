@@ -1,9 +1,82 @@
 name: Gatsby DevOps
 on: [push]
+env:
+  PRODUCTION_DOMAIN: quibox.surge.sh
+  STAGING_DOMAIN: quibox-staging.surge.sh
 jobs:
   Install_Dependencies:
+    container: node:16
     runs-on: ubuntu-latest
     steps:
-      - run: npm install
+      - uses: actions/checkout@v2
+      - run: echo ${{ github.sha }}
+      - run: npm ci
       - run: npm install -g gatsby-cli
       - run: gatsby build
+      - run: sed -i "s/%%VERSION%%/${{ github.sha }}/g" ./public/index.html
+      - name: Upload built public folder
+        uses: actions/upload-artifact@v3
+        with:
+          name: public
+          path: public
+  Test_artifact:
+    container: alpine
+    runs-on: ubuntu-latest
+    needs: [Install_Dependencies]
+    steps:
+      - name: Download public folder
+        uses: actions/download-artifact@v3
+        with:
+          name: public
+      - run: grep "Gatsby" ./index.html
+  Deploy_staging:
+    environment:
+      name: staging
+      url: http://${{ env.STAGING_DOMAIN }}
+    container: node:16
+    runs-on: ubuntu-latest
+    needs: [ Install_Dependencies ]
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - name: Download public folder
+        uses: actions/download-artifact@v3
+        with:
+          name: public
+      - name: Deploy to ${{ env.STAGING_DOMAIN }}
+        uses: dswistowski/surge-sh-action@v1
+        with:
+          domain: ${{ env.STAGING_DOMAIN }}
+          project: '.'
+          login: ${{secrets.surge_login}}
+          token: ${{secrets.surge_token}}
+  Deploy_production:
+    environment:
+      name: production
+      url: http://${{ env.PRODUCTION_DOMAIN }}
+    container: node:16
+    runs-on: ubuntu-latest
+    needs: [Install_Dependencies]
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - name: Download public folder
+        uses: actions/download-artifact@v3
+        with:
+          name: public
+      - name: Deploy to ${{ env.PRODUCTION_DOMAIN }}
+        uses: dswistowski/surge-sh-action@v1
+        with:
+          domain: ${{ env.PRODUCTION_DOMAIN }}
+          project: '.'
+          login: ${{secrets.surge_login}}
+          token: ${{secrets.surge_token}}
+  Test_deployment:
+    container: alpine
+    runs-on: ubuntu-latest
+    needs: [Deploy_production]
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - run: apk --no-cache add curl
+      - run: echo curl --version
+      - run: echo ${{ env.PRODUCTION_DOMAIN }}
+      - run: curl https://${{ env.PRODUCTION_DOMAIN }} | tac | tac | grep -q "Gatsby"
+
