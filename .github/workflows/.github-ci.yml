@@ -31,8 +31,8 @@ jobs:
       - run: grep "Gatsby" ./index.html
   Deploy_review:
     environment:
-      name: review/${{env.GITHUB_REF_NAME}}
-      url: http://quibox-${{GITHUB_REF_NAME}}.surge.sh
+      name: review/$GITHUB_REF_NAME
+      url: http://quibox-$GITHUB_REF_NAME.surge.sh
     container: node:16
     runs-on: ubuntu-latest
     needs: [ Install_Dependencies ]
@@ -42,10 +42,10 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: public
-      - name: Deploy to ${{env.GITHUB_REF_NAME}}
+      - name: Deploy to $GITHUB_REF_NAME
         uses: dswistowski/surge-sh-action@v1
         with:
-          domain: ${{env.GITHUB_REF_NAME}}
+          domain: $GITHUB_REF_NAME
           project: '.'
           login: ${{secrets.surge_login}}
           token: ${{secrets.surge_token}}
