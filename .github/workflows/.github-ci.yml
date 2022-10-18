@@ -14,6 +14,7 @@ jobs:
       - run: npm install -g gatsby-cli
       - run: gatsby build
       - run: sed -i "s/%%VERSION%%/${{ github.sha }}/g" ./public/index.html
+      - run: echo ${{github.event_name}}
       - name: Upload built public folder
         uses: actions/upload-artifact@v3
         with:
