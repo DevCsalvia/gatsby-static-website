@@ -29,6 +29,26 @@ jobs:
         with:
           name: public
       - run: grep "Gatsby" ./index.html
+  Deploy_review:
+    environment:
+      name: review/${{GITHUB_REF_NAME}}
+      url: http://quibox-${{GITHUB_REF_NAME}}.surge.sh
+    container: node:16
+    runs-on: ubuntu-latest
+    needs: [ Install_Dependencies ]
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Download public folder
+        uses: actions/download-artifact@v3
+        with:
+          name: public
+      - name: Deploy to ${{GITHUB_REF_NAME}}
+        uses: dswistowski/surge-sh-action@v1
+        with:
+          domain: ${{GITHUB_REF_NAME}}
+          project: '.'
+          login: ${{secrets.surge_login}}
+          token: ${{secrets.surge_token}}
   Deploy_staging:
     environment:
       name: staging
