@@ -1,5 +1,8 @@
 name: Gatsby DevOps
 on: [push]
+env:
+  PRODUCTION_DOMAIN: Quibox.surge.sh
+  STAGING_DOMAIN: Quibox-staging.surge.sh
 jobs:
   Install_Dependencies:
     container: node:16
@@ -29,7 +32,7 @@ jobs:
   Deploy_staging:
     environment:
       name: staging
-      url: http://Quibox-staging.surge.sh
+      url: http://$STAGING_DOMAIN
     container: node:16
     runs-on: ubuntu-latest
     needs: [ Install_Dependencies ]
@@ -38,17 +41,17 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: public
-      - name: Deploy to Quibox-staging.surge.sh
+      - name: Deploy to $STAGING_DOMAIN
         uses: dswistowski/surge-sh-action@v1
         with:
-          domain: 'Quibox-staging.surge.sh'
+          domain: $STAGING_DOMAIN
           project: '.'
           login: ${{secrets.surge_login}}
           token: ${{secrets.surge_token}}
   Deploy_production:
     environment:
       name: production
-      url: http://Quibox.surge.sh
+      url: http://$PRODUCTION_DOMAIN
     container: node:16
     runs-on: ubuntu-latest
     needs: [Install_Dependencies]
@@ -57,10 +60,10 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: public
-      - name: Deploy to Quibox.surge.sh
+      - name: Deploy to $PRODUCTION_DOMAIN
         uses: dswistowski/surge-sh-action@v1
         with:
-          domain: 'Quibox.surge.sh'
+          domain: $PRODUCTION_DOMAIN
           project: '.'
           login: ${{secrets.surge_login}}
           token: ${{secrets.surge_token}}
@@ -71,5 +74,5 @@ jobs:
     steps:
       - run: apk --no-cache add curl
       - run: echo curl --version
-      - run: curl "https://quibox.surge.sh" | tac | tac | grep -q "Gatsby"
+      - run: curl "https://$PRODUCTION_DOMAIN" | tac | tac | grep -q "Gatsby"
 
