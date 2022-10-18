@@ -26,7 +26,7 @@ jobs:
         with:
           name: public
       - run: grep "Gatsby" ./index.html
-  deploy staging:
+  Deploy_staging:
     env:
       name: staging
       url: http://Quibox-staging.surge.sh
@@ -45,7 +45,7 @@ jobs:
           project: '.'
           login: ${{secrets.surge_login}}
           token: ${{secrets.surge_token}}
-  deploy production:
+  Deploy_production:
     env:
       name: production
       url: http://Quibox.surge.sh
@@ -67,7 +67,7 @@ jobs:
   test deployment:
     container: alpine
     runs-on: ubuntu-latest
-    needs: [deploy production]
+    needs: [Deploy_production]
     steps:
       - run: apk --no-cache add curl
       - run: echo curl --version
