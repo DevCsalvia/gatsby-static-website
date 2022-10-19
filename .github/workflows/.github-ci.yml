@@ -44,7 +44,6 @@ jobs:
       name: review/$GITHUB_ENV
       url: http://$GITHUB_ENV
     steps:
-      - name: Surge deploy
       - uses: DevCsalvia/CompositeAction@main
         with:
           should_execute: github.ref != 'refs/heads/master'
@@ -58,7 +57,6 @@ jobs:
       name: staging
       url: http://${{ env.STAGING_DOMAIN }}
     steps:
-      - name: Surge deploy
       - uses: DevCsalvia/CompositeAction@main
         with:
           should_execute: github.ref == 'refs/heads/master'
@@ -73,7 +71,6 @@ jobs:
       name: production
       url: http://${{ env.PRODUCTION_DOMAIN }}
     steps:
-      - name: Surge deploy
       - uses: DevCsalvia/CompositeAction@main
         with:
           should_execute: github.ref == 'refs/heads/master'
