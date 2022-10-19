@@ -44,26 +44,26 @@ jobs:
       name: review/$GITHUB_ENV
       url: http://$GITHUB_ENV
     steps:
-      uses: devcsalvia/CompositeAction@main
-      with:
-        should_execute: github.ref != 'refs/heads/master'
-        domain: $GITHUB_ENV
-        image_name: review/$GITHUB_ENV
-        login: ${{secrets.surge_login}}
-        token: ${{secrets.surge_token}}
+      - uses: devcsalvia/CompositeAction@main
+        with:
+          should_execute: github.ref != 'refs/heads/master'
+          domain: $GITHUB_ENV
+          image_name: review/$GITHUB_ENV
+          login: ${{secrets.surge_login}}
+          token: ${{secrets.surge_token}}
 
   Deploy_staging:
     environment:
       name: staging
       url: http://${{ env.STAGING_DOMAIN }}
     steps:
-      uses: devcsalvia/CompositeAction@main
-      with:
-        should_execute: github.ref == 'refs/heads/master'
-        domain: ${{ env.STAGING_DOMAIN }}
-        image_name: staging
-        login: ${{secrets.surge_login}}
-        token: ${{secrets.surge_token}}
+      - uses: devcsalvia/CompositeAction@main
+        with:
+          should_execute: github.ref == 'refs/heads/master'
+          domain: ${{ env.STAGING_DOMAIN }}
+          image_name: staging
+          login: ${{secrets.surge_login}}
+          token: ${{secrets.surge_token}}
 
 
   Deploy_production:
@@ -71,13 +71,13 @@ jobs:
       name: production
       url: http://${{ env.PRODUCTION_DOMAIN }}
     steps:
-      uses: devcsalvia/CompositeAction@main
-      with:
-        should_execute: github.ref == 'refs/heads/master'
-        domain: ${{ env.PRODUCTION_DOMAIN }}
-        image_name: production
-        login: ${{secrets.surge_login}}
-        token: ${{secrets.surge_token}}
+      - uses: devcsalvia/CompositeAction@main
+        with:
+          should_execute: github.ref == 'refs/heads/master'
+          domain: ${{ env.PRODUCTION_DOMAIN }}
+          image_name: production
+          login: ${{secrets.surge_login}}
+          token: ${{secrets.surge_token}}
 
   Test_deployment:
     container: alpine
