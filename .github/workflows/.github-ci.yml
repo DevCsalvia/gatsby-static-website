@@ -45,7 +45,7 @@ jobs:
       url: http://$GITHUB_ENV
     steps:
       - name: Surge deploy
-      - uses: devcsalvia/CompositeAction@main
+        uses: devcsalvia/CompositeAction@main
         with:
           should_execute: github.ref != 'refs/heads/master'
           domain: $GITHUB_ENV
@@ -61,7 +61,7 @@ jobs:
       url: http://${{ env.STAGING_DOMAIN }}
     steps:
       - name: Surge deploy
-      - uses: devcsalvia/CompositeAction@main
+        uses: devcsalvia/CompositeAction@main
         with:
           should_execute: github.ref == 'refs/heads/master'
           domain: ${{ env.STAGING_DOMAIN }}
@@ -78,7 +78,7 @@ jobs:
       url: http://${{ env.PRODUCTION_DOMAIN }}
     steps:
       - name: Surge deploy
-      - uses: devcsalvia/CompositeAction@main
+        uses: devcsalvia/CompositeAction@main
         with:
           should_execute: github.ref == 'refs/heads/master'
           domain: ${{ env.PRODUCTION_DOMAIN }}
