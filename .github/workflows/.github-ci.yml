@@ -44,7 +44,7 @@ jobs:
       name: review/$GITHUB_ENV
       url: http://$GITHUB_ENV
     steps:
-      - uses: devcsalvia/CompositeAction@main
+      - uses: DevCsalvia/CompositeAction@main
         with:
           should_execute: github.ref != 'refs/heads/master'
           domain: $GITHUB_ENV
@@ -57,7 +57,7 @@ jobs:
       name: staging
       url: http://${{ env.STAGING_DOMAIN }}
     steps:
-      - uses: devcsalvia/CompositeAction@main
+      - uses: DevCsalvia/CompositeAction@main
         with:
           should_execute: github.ref == 'refs/heads/master'
           domain: ${{ env.STAGING_DOMAIN }}
@@ -71,7 +71,7 @@ jobs:
       name: production
       url: http://${{ env.PRODUCTION_DOMAIN }}
     steps:
-      - uses: devcsalvia/CompositeAction@main
+      - uses: DevCsalvia/CompositeAction@main
         with:
           should_execute: github.ref == 'refs/heads/master'
           domain: ${{ env.PRODUCTION_DOMAIN }}
