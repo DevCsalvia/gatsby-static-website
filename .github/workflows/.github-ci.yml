@@ -40,6 +40,7 @@ jobs:
   Deploy_review:
     container: node:16
     runs-on: ubuntu-latest
+    needs: [Install_Dependencies]
     environment:
       name: review/$GITHUB_ENV
       url: http://$GITHUB_ENV
@@ -56,6 +57,7 @@ jobs:
   Deploy_staging:
     container: node:16
     runs-on: ubuntu-latest
+    needs: [Install_Dependencies]
     environment:
       name: staging
       url: http://${{ env.STAGING_DOMAIN }}
@@ -73,6 +75,7 @@ jobs:
   Deploy_production:
     container: node:16
     runs-on: ubuntu-latest
+    needs: [Install_Dependencies]
     environment:
       name: production
       url: http://${{ env.PRODUCTION_DOMAIN }}
