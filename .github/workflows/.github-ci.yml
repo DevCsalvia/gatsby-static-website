@@ -6,10 +6,6 @@ on:
   pull_request:
     branches:
       - feature/*
-env:
-  PRODUCTION_DOMAIN: quibox.surge.sh
-  STAGING_DOMAIN: quibox-staging.surge.sh
-
 jobs:
   Install_Dependencies:
     container: node:16
