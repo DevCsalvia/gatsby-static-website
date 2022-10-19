@@ -78,15 +78,15 @@ jobs:
 #          image_name: production
 #          login: ${{secrets.surge_login}}
 #          token: ${{secrets.surge_token}}
-
-  Test_deployment:
-    container: alpine
-    runs-on: ubuntu-latest
-    needs: [Deploy_production]
-    if: github.ref == 'refs/heads/master'
-    steps:
-      - run: apk --no-cache add curl
-      - run: echo curl --version
-      - run: echo ${{ env.PRODUCTION_DOMAIN }}
-      - run: curl https://${{ env.PRODUCTION_DOMAIN }} | tac | tac | grep -q "Gatsby"
+#
+#  Test_deployment:
+#    container: alpine
+#    runs-on: ubuntu-latest
+#    needs: [Deploy_production]
+#    if: github.ref == 'refs/heads/master'
+#    steps:
+#      - run: apk --no-cache add curl
+#      - run: echo curl --version
+#      - run: echo ${{ env.PRODUCTION_DOMAIN }}
+#      - run: curl https://${{ env.PRODUCTION_DOMAIN }} | tac | tac | grep -q "Gatsby"
 
