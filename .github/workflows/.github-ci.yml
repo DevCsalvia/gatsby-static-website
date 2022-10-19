@@ -1,8 +1,15 @@
 name: Gatsby DevOps
-on: [push]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - feature/*
 env:
   PRODUCTION_DOMAIN: quibox.surge.sh
   STAGING_DOMAIN: quibox-staging.surge.sh
+
 jobs:
   Install_Dependencies:
     container: node:16
@@ -14,11 +21,13 @@ jobs:
       - run: npm install -g gatsby-cli
       - run: gatsby build
       - run: sed -i "s/%%VERSION%%/${{ github.sha }}/g" ./public/index.html
+      - run: echo ${{github.event_name}}
       - name: Upload built public folder
         uses: actions/upload-artifact@v3
         with:
           name: public
           path: public
+
   Test_artifact:
     container: alpine
     runs-on: ubuntu-latest
@@ -29,46 +38,47 @@ jobs:
         with:
           name: public
       - run: grep "Gatsby" ./index.html
+
+  Deploy_review:
+    environment:
+      name: review/$GITHUB_ENV
+      url: http://$GITHUB_ENV
+    steps:
+      - uses: DevCsalvia/CompositeAction@main
+        with:
+          should_execute: github.ref != 'refs/heads/master'
+          domain: $GITHUB_ENV
+          image_name: review/$GITHUB_ENV
+          login: ${{secrets.surge_login}}
+          token: ${{secrets.surge_token}}
+
   Deploy_staging:
     environment:
       name: staging
       url: http://${{ env.STAGING_DOMAIN }}
-    container: node:16
-    runs-on: ubuntu-latest
-    needs: [ Install_Dependencies ]
-    if: github.ref == 'refs/heads/master'
     steps:
-      - name: Download public folder
-        uses: actions/download-artifact@v3
+      - uses: DevCsalvia/CompositeAction@main
         with:
-          name: public
-      - name: Deploy to ${{ env.STAGING_DOMAIN }}
-        uses: dswistowski/surge-sh-action@v1
-        with:
+          should_execute: github.ref == 'refs/heads/master'
           domain: ${{ env.STAGING_DOMAIN }}
-          project: '.'
+          image_name: staging
           login: ${{secrets.surge_login}}
           token: ${{secrets.surge_token}}
+
+
   Deploy_production:
     environment:
       name: production
       url: http://${{ env.PRODUCTION_DOMAIN }}
-    container: node:16
-    runs-on: ubuntu-latest
-    needs: [Install_Dependencies]
-    if: github.ref == 'refs/heads/master'
     steps:
-      - name: Download public folder
-        uses: actions/download-artifact@v3
+      - uses: DevCsalvia/CompositeAction@main
         with:
-          name: public
-      - name: Deploy to ${{ env.PRODUCTION_DOMAIN }}
-        uses: dswistowski/surge-sh-action@v1
-        with:
+          should_execute: github.ref == 'refs/heads/master'
           domain: ${{ env.PRODUCTION_DOMAIN }}
-          project: '.'
+          image_name: production
           login: ${{secrets.surge_login}}
           token: ${{secrets.surge_token}}
+
   Test_deployment:
     container: alpine
     runs-on: ubuntu-latest
