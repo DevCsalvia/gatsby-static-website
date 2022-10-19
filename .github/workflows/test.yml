@@ -1,0 +1,22 @@
+#This is a comment
+
+base_person: &base
+  city: NYC
+  country: USA
+
+person:
+  <<: *base
+  name: &name John
+  age: 29
+  isMale: true
+  stuff:
+    - laptop
+    - car
+    - bike
+  food: [pizza, donuts, coke]
+  friends:
+    - name: Jane
+      age: 29
+    - name: Mike
+      age: 22
+  self: *name
