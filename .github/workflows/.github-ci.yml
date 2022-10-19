@@ -40,6 +40,8 @@ jobs:
       - run: grep "Gatsby" ./index.html
 
   Deploy_review:
+    container: node:16
+    runs-on: ubuntu-latest
     environment:
       name: review/$GITHUB_ENV
       url: http://$GITHUB_ENV
@@ -54,6 +56,8 @@ jobs:
           token: ${{secrets.surge_token}}
 
   Deploy_staging:
+    container: node:16
+    runs-on: ubuntu-latest
     environment:
       name: staging
       url: http://${{ env.STAGING_DOMAIN }}
@@ -69,6 +73,8 @@ jobs:
 
 
   Deploy_production:
+    container: node:16
+    runs-on: ubuntu-latest
     environment:
       name: production
       url: http://${{ env.PRODUCTION_DOMAIN }}
