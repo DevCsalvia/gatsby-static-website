@@ -1,8 +1,6 @@
 name: Gatsby DevOps
 on:
   push:
-    branches:
-      - master
   pull_request:
     branches:
       - feature/*
