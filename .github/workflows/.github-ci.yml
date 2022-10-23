@@ -44,11 +44,11 @@ jobs:
     environment:
       name: review/$GITHUB_ENV
       url: http://$GITHUB_ENV
+    if: github.ref != 'refs/heads/master'
     steps:
       - name: Surge deploy
         uses: devcsalvia/CompositeAction@main
         with:
-          should_execute: github.ref != 'refs/heads/master'
           domain: $GITHUB_ENV
           image_name: review/$GITHUB_ENV
           login: ${{secrets.surge_login}}
@@ -61,11 +61,11 @@ jobs:
     environment:
       name: staging
       url: http://${{ env.STAGING_DOMAIN }}
+    if: github.ref == 'refs/heads/master'
     steps:
       - name: Surge deploy
         uses: devcsalvia/CompositeAction@main
         with:
-          should_execute: github.ref == 'refs/heads/master'
           domain: ${{ env.STAGING_DOMAIN }}
           image_name: staging
           login: ${{secrets.surge_login}}
@@ -79,11 +79,11 @@ jobs:
     environment:
       name: production
       url: http://${{ env.PRODUCTION_DOMAIN }}
+    if: github.ref == 'refs/heads/master'
     steps:
       - name: Surge deploy
         uses: devcsalvia/CompositeAction@main
         with:
-          should_execute: github.ref == 'refs/heads/master'
           domain: ${{ env.PRODUCTION_DOMAIN }}
           image_name: production
           login: ${{secrets.surge_login}}
